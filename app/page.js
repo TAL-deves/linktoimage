@@ -1,95 +1,94 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Home() {
+  const [imageUrl, setImageUrl] = useState("https://placehold.co/600x400");
+  const [currentDateandtime, seturrentDateandtime] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://jsonplaceholder.typicode.com/todos/1") //TODO: Change the URL here
+      .then((res) => {
+        seturrentDateandtime(`${new Date()}`);
+        // setImageUrl(res.data.image); //TODO: Depends on API response
+      })
+      .catch((err) => {
+        alert("Got an error" + err.message);
+      });
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main
+      style={{
+        marginTop: "5rem",
+      }}
+    >
+      <div style={{ display: "flex", flexWrap: "wrap", margin: "0 5rem" }}>
+        <div style={{ flex: "1 1 50%" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+            <input
+              style={{
+                background: "#fff",
+                color: "#000",
+                padding: "10px",
+                borderRadius: "7px",
+                marginBottom: "1rem",
+              }}
+              type="text"
+              name="link"
+              placeholder="Amount"
             />
-          </a>
+            <div>
+              <button className="button-3" type="submit">
+                Generate
+              </button>
+              <button
+                className="button-4"
+                style={{ margin: "1rem 1rem " }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.reload();
+                }}
+              >
+                Refresh
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          style={{
+            flex: "1 1 50%",
+            border: "2px solid black",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            src={imageUrl}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+            alt="Image"
+          />
+          <p style={{ color: "#000" }}>{currentDateandtime}</p>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
-  )
+  );
 }
